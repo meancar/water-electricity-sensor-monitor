@@ -35,9 +35,6 @@
                 Current
               </th>
               <th class="px-4 py-2 text-left text-gray-700 font-medium">
-                Price
-              </th>
-              <th class="px-4 py-2 text-left text-gray-700 font-medium">
                 Usage
               </th>
               <th class="px-4 py-2 text-left text-gray-700 font-medium">Due</th>
@@ -58,36 +55,30 @@
                 }}</b>
                 kWh
               </td>
-              <td class="px-4 py-2">
-                3500 VND
-              </td>
-              <td class="px-4 py-2 text-red-500"><b>{{ roomData.elecDue }}</b> VND</td>
+              <td class="px-4 py-2 text-red-500">{{ roomData.elecDue }} VND</td>
             </tr>
             <tr>
               <td class="px-4 py-2 font-medium text-gray-700">Water</td>
               <td class="px-4 py-2">
-                <b>{{ roomData.waterPast ?? 0 }}</b> liter
+                <b>{{ roomData.waterPast ?? 0 }}</b> m³
               </td>
               <td class="px-4 py-2">
-                <b>{{ roomData.waterCurrent ?? 0 }}</b> liter
+                <b>{{ roomData.waterCurrent ?? 0 }}</b> m³
               </td>
               <td class="px-4 py-2">
                 <b>{{
                   (roomData.waterCurrent ?? 0) - (roomData.waterPast ?? 0)
                 }}</b>
-                liter
-              </td>
-              <td class="px-4 py-2">
-                15000 VND
+                kWh
               </td>
               <td class="px-4 py-2 text-red-500">
-                <b>{{ roomData.waterDue }}</b> VND
+                {{ roomData.waterDue }} VND
               </td>
             </tr>
           </tbody>
           <tfoot class="bg-gray-100 shadow-md">
             <tr>
-              <td colspan="4"></td>
+              <td colspan="3"></td>
               <td class="px-4 py-3 font-bold text-lg">Total Due:</td>
               <td class="px-4 py-3 font-bold text-lg text-red-500">
                 {{ roomData.totalDue }} VND
@@ -137,13 +128,13 @@
     <!-- Buttons -->
     <div class="flex justify-end mt-6">
       <button
-        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2 hover:cursor-pointer"
+        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2"
         (click)="printPDF()"
       >
         Print PDF
       </button>
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hover:cursor-pointer"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         (click)="onClose()"
       >
         Close

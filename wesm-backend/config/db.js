@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 function connectDB() {
     try {
         mongoose.connect(process.env.MONGODB_URI);
-        mongoose.pluralize(null);
     } catch (err) {
         console.error(err.message);
         process.exit(1);

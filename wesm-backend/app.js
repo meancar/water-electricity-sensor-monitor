@@ -21,8 +21,6 @@ const getDataRouter = require("./routes/getData");
 const getDataRangeRouter = require("./routes/getDataRange");
 const populateDataRouter = require("./routes/populateElecData");
 const populateWaterRouter = require("./routes/populateWaterData");
-const populateRssiRouter = require("./routes/populateRssi");
-const getSensorStatusRouter = require("./routes/getSensorStatus");
 
 var app = express();
 
@@ -44,8 +42,6 @@ app.use("/api/get/range", getDataRangeRouter);
 app.use("/static", express.static(path.join(__dirname, "public")));
 app.use("/populate/elec", populateDataRouter);
 app.use("/populate/water", populateWaterRouter);
-app.use("/populate/rssi", populateRssiRouter);
-app.use("/api/get/rssi", getSensorStatusRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

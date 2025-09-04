@@ -39,7 +39,7 @@ export class DashboardComponent {
     labels: this.chartLabels,
     datasets: [
       {
-        label: 'Water (liter)',
+        label: 'Water (m³)',
         data: [10, 12, 8, 15, 11, 13, 14],
         backgroundColor: 'rgba(34, 197, 94, 0.6)', // Green
         borderColor: 'rgba(34, 197, 94, 1)',
@@ -76,7 +76,7 @@ export class DashboardComponent {
     scales: {
       y: {
         beginAtZero: true,
-        title: { display: true, text: 'liter' },
+        title: { display: true, text: 'm³' },
       },
       x: {
         title: { display: true, text: 'Day' },

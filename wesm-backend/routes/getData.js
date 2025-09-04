@@ -29,6 +29,7 @@ function convertToUTCDate(dateString) {
 router.get("/", async (req, res) => {
   var { type, sensor_id, date = undefined } = req.query;
   var model;
+  console.log(date);
 
   if (type == "elec") {
     model = electricModel;

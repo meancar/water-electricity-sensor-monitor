@@ -88,7 +88,7 @@ export class RoomDetailsComponent implements OnChanges {
     datasets: [
       {
         data: [],
-        label: 'Water (liter)',
+        label: 'Water (m³)',
         backgroundColor: 'rgba(34, 197, 94, 0.6)',
         borderColor: 'rgba(34, 197, 94, 1)',
         borderWidth: 1,
@@ -123,7 +123,7 @@ export class RoomDetailsComponent implements OnChanges {
     scales: {
       y: {
         beginAtZero: true,
-        title: { display: true, text: 'liter' },
+        title: { display: true, text: 'm³' },
       },
       x: {
         title: { display: true, text: 'Day' },
@@ -158,7 +158,7 @@ export class RoomDetailsComponent implements OnChanges {
     // Add room data table using autoTable
     autoTable(pdf, {
       startY: yPosition,
-      head: [['Utility', 'Past', 'Current', 'Usage', 'Price', 'Due']],
+      head: [['Utility', 'Past', 'Current', 'Usage', 'Due']],
       body: [
         [
           'Electricity',
@@ -167,7 +167,6 @@ export class RoomDetailsComponent implements OnChanges {
           `${
             (this.roomData.elecCurrent ?? 0) - (this.roomData.elecPast ?? 0)
           } kWh`,
-          '3500 VND',
           {
             content: `${this.roomData.elecDue} VND`,
             styles: { textColor: [220, 38, 38] },
@@ -175,19 +174,17 @@ export class RoomDetailsComponent implements OnChanges {
         ],
         [
           'Water',
-          `${this.roomData.waterPast} liter`,
-          `${this.roomData.waterCurrent} liter`,
+          `${this.roomData.waterPast} m³`,
+          `${this.roomData.waterCurrent} m³`,
           `${
             (this.roomData.waterCurrent ?? 0) - (this.roomData.waterPast ?? 0)
-          } liter`,
-          '15000 VND',
+          } m³`,
           {
             content: `${this.roomData.waterDue} VND`,
             styles: { textColor: [220, 38, 38] },
           },
         ],
         [
-          '',
           '',
           '',
           '',
@@ -287,7 +284,7 @@ export class RoomDetailsComponent implements OnChanges {
         labels: this.chartLabels || [],
         datasets: [
           {
-            label: 'Water (liter)',
+            label: 'Water (m³)',
             data: this.waterUsageChartData || [],
             backgroundColor: 'rgba(34, 197, 94, 0.6)',
             borderColor: 'rgba(34, 197, 94, 1)',

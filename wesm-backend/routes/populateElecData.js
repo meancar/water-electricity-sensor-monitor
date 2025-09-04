@@ -6,7 +6,7 @@ async function populateData(sensorId) {
   try {
     // Generate 60 random power values between 1 and 1000, sorted in ascending order
     const powerValues = Array.from({ length: 60 }, () =>
-      (Math.random() * 30 + 1).toFixed(2)
+      (Math.random() * 999 + 1).toFixed(2)
     ).sort((a, b) => a - b);
 
     today = new Date();

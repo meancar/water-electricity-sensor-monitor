@@ -56,23 +56,5 @@ export class SensorDataService {
     });
   }
 
-  fetchSensorStatus(type: string) {
-    var baseParams = new HttpParams();
-    var nodeId: string = "";
-    if (type === 'water') {
-      nodeId = 'node_2';
-    } else if (type === 'elec') {
-      nodeId = 'node_1';
-    } else {
-      console.error('Invalid type.');
-    }
-
-    baseParams = baseParams.set('node_id', nodeId);
-
-    return this.http.get<number | undefined>(`${this.baseUrl}/rssi`, {
-      params: baseParams,
-    });
-  }
-
   constructor() {}
 }

@@ -1,83 +1,29 @@
 <div class="p-6">
-  <div class="mb-4">
-    <p class="text-sm font-medium text-gray-500 bg-gray-50 px-4 py-2 rounded-lg shadow-sm inline-block">
-      In this cycle:
-    </p>
-  </div>
   <!-- Stats Cards -->
+  <h1 class="gap-6 mb-6 ml-4 text-lg font-semibold">In the last 30 days:</h1>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <div class="bg-white p-6 rounded-lg shadow">
       <h3 class="text-lg font-semibold text-gray-700">
         Total Electricity Used:
       </h3>
       <p class="text-3xl font-bold text-blue-600">
-        {{ totalElecUsageThisCycle }} kWh
+        {{ totalElecUsageLast30Days }} kWh
       </p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow">
       <h3 class="text-lg font-semibold text-gray-700">Total Water Used:</h3>
       <p class="text-3xl font-bold text-green-600">
-        {{ totalWaterUsageThisCycle }} liter 
+        {{ totalWaterUsageLast30Days }} m³
       </p>
     </div>
     <div class="bg-white p-6 rounded-lg shadow">
-      <h3 class="text-lg font-semibold text-gray-700">Estimated Total Due:</h3>
+      <h3 class="text-lg font-semibold text-gray-700">Total Due:</h3>
       <p class="text-3xl font-bold text-purple-600">
         {{
-          totalElecUsageThisCycle * 3500 + totalWaterUsageThisCycle * 15000
+          totalElecUsageLast30Days * 3500 + totalWaterUsageLast30Days * 15000
         }}
         VND
       </p>
-    </div>
-  </div>
-
-  <div class="flex items-center p-6 bg-white rounded-xl shadow-lg mb-6 border border-gray-100">
-    <h1 class="text-xl font-bold text-gray-800 mr-6">Sensors Status:</h1>
-    <div class="flex items-center space-x-8">
-      <!-- Electricity Sensor -->
-      <div class="flex items-center bg-gray-50 rounded-lg px-4 py-2 shadow-sm transition-all duration-300 hover:shadow-md">
-        <p class="text-base font-semibold text-gray-700 mr-3">Electricity</p>
-        <div class="flex items-center">
-          <span
-            class="w-4 h-4 rounded-full mr-2 transition-colors duration-200"
-            [ngClass]="{
-              'bg-green-500': elecRssi >= -100,
-              'bg-red-500': elecRssi < -100
-            }"
-          ></span>
-          <p
-            class="text-base font-medium"
-            [ngClass]="{
-              'text-green-600': elecRssi >= -100,
-              'text-red-600': elecRssi < -100
-            }"
-          >
-            {{ elecRssi }} dBm
-          </p>
-        </div>
-      </div>
-      <!-- Water Sensor -->
-      <div class="flex items-center bg-gray-50 rounded-lg px-4 py-2 shadow-sm transition-all duration-300 hover:shadow-md">
-        <p class="text-base font-semibold text-gray-700 mr-3">Water</p>
-        <div class="flex items-center">
-          <span
-            class="w-4 h-4 rounded-full mr-2 transition-colors duration-200"
-            [ngClass]="{
-              'bg-green-500': waterRssi >= -100,
-              'bg-red-500': waterRssi < -100
-            }"
-          ></span>
-          <p
-            class="text-base font-medium"
-            [ngClass]="{
-              'text-green-600': waterRssi >= -100,
-              'text-red-600': waterRssi < -100
-            }"
-          >
-            {{ waterRssi }} dBm
-          </p>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -85,26 +31,23 @@
   <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
     <!-- Room Blocks -->
     <div class="bg-white p-6 rounded-lg shadow">
-      <div class="flex items-center mb-4 justify-between">
+      <div class="flex items-center mb-4">
         <h3 class="text-lg font-semibold text-gray-700">Room Details</h3>
-        <div>
-          <input
-            #filter
-            type="text"
-            placeholder="Search rooms..."
-            class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 ml-2"
-            (input)="filterRooms(filter.value)"
-          />
-          <button
-            class="w-20 py-2 border border-gray-300 rounded-lg ml-2 text-white bg-blue-500 hover:bg-blue-700 hover:cursor-pointer"
-            type="button"
-            (click)="filterRooms(filter.value)"
-          >
-            Search
-          </button>
-        </div>
+        <input
+          #filter
+          type="text"
+          placeholder="Search rooms..."
+          class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 ml-2"
+        />
+        <button
+          class="w-20 py-2 border border-gray-300 rounded-lg bg-blue-500 ml-2 text-white"
+          type="button"
+          (click)="filterRooms(filter.value)"
+        >
+          Search
+        </button>
       </div>
-      <div class="inline-grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 w-full">
+      <div class="inline-grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <!-- Room 1 -->
         <app-room-brief
           *ngFor="let roomBriefData of filteredRoomsBriefData; let i = index"
@@ -122,7 +65,7 @@
       <h3 class="text-lg font-semibold text-gray-700 mb-4">Usage Overview</h3>
       <div class="grid grid-cols-1 gap-6">
         <!-- Electricity Usage Chart -->
-        <app-electricity-brief class="mb-8"
+        <app-electricity-brief
           [chartLabels]="chartLabels"
           [chartData]="elecChartData"
         ></app-electricity-brief>

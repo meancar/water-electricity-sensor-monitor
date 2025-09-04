@@ -1,11 +1,4 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  ChangeDetectorRef,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SensorDataService } from '../../services/sensor-data.service';
 import { lastValueFrom } from 'rxjs';
@@ -29,26 +22,22 @@ export class DashboardComponent implements OnInit {
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   public roomsBriefData: RoomBriefData[] = [];
   public filteredRoomsBriefData: RoomBriefData[] = [];
-  public totalWaterUsageThisCycle: number = -1;
-  public totalElecUsageThisCycle: number = -1;
+  public totalWaterUsageLast30Days: number = -1;
+  public totalElecUsageLast30Days: number = -1;
   public chartLabels: string[] = [];
   public elecChartData: number[] = [];
   public waterChartData: number[] = [];
   public elecFetchedUsage: number[][] = [];
   public waterFetchedUsage: number[][] = [];
-  public elecRssi: number = -200;
-  public waterRssi: number = -200;
 
   async ngOnInit() {
     await Promise.all([
       this.getBriefAllRooms(),
-      this.getTotalWaterUsageThisCycle(),
-      this.getTotalElecUsageThisCycle(),
+      this.getTotalWaterUsageLast30Days(),
+      this.getTotalElecUsageLast30Days(),
       this.buildChartLabels(),
       this.buildElecChartData(6),
       this.buildWaterChartData(6),
-      this.getSensorRssi('water'),
-      this.getSensorRssi('elec'),
     ]);
     this.filteredRoomsBriefData = this.roomsBriefData;
     this.chartLabels = [...this.chartLabels];
@@ -132,7 +121,6 @@ export class DashboardComponent implements OnInit {
         ((roomBrief.waterCurrent ?? 0) - (roomBrief.waterPast ?? 0)) * 15000;
       roomBrief.totalDue =
         roomBrief.totalDue || roomBrief.elecDue + roomBrief.waterDue;
-      roomBrief.paymentStatus = index % 2 === 0 ? false : true;
     } catch (error) {
       console.error(
         `Unable to get completed data for room ${index}. Error: `,
@@ -146,7 +134,7 @@ export class DashboardComponent implements OnInit {
     return roomBrief;
   }
 
-  // Currently there are only 6 rooms available, so it will be hardcoded.
+  // Currently there are only 2 rooms available, so it will be hardcoded.
   // Should use something like $ROOMS env variable instead.
   private async getBriefAllRooms() {
     for (let i = 1; i <= 6; i++) {
@@ -155,22 +143,24 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private async getTotalWaterUsageThisCycle() {
-    let latest: number = 0;
-    const currentDate = new Date();
-    const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0);
-  
+  private async getTotalWaterUsageLast30Days() {
+    var latest: number = 0;
+
     try {
       for (let i = 1; i <= 6; i++) {
-        let a = await lastValueFrom(this.sensorDataService.fetchWaterData(`water${i}`));
+        let a = await lastValueFrom(
+          this.sensorDataService.fetchWaterData(`water${i}`)
+        );
         if (a) {
           latest += a[0]?.water ?? 0;
         }
-  
+
         let b = await lastValueFrom(
           this.sensorDataService.fetchWaterData(
             `water${i}`,
-            startOfMonth.toISOString().slice(0, 10)
+            new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .slice(0, 10)
           )
         );
         if (b) {
@@ -178,28 +168,30 @@ export class DashboardComponent implements OnInit {
         }
       }
     } catch (error) {
-      console.error('Error while fetching total water usage this month: ', error);
+      console.error('Error while fetching total water usage: ', error);
     }
-  
-    this.totalWaterUsageThisCycle = Math.floor(latest);
+
+    this.totalWaterUsageLast30Days = Math.floor(latest);
   }
-  
-  private async getTotalElecUsageThisCycle() {
-    let latest: number = 0;
-    const currentDate = new Date();
-    const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0);
-  
+
+  private async getTotalElecUsageLast30Days() {
+    var latest: number = 0;
+
     try {
       for (let i = 1; i <= 6; i++) {
-        let a = await lastValueFrom(this.sensorDataService.fetchElecData(`power${i}`));
+        let a = await lastValueFrom(
+          this.sensorDataService.fetchElecData(`power${i}`)
+        );
         if (a) {
           latest += a[0]?.power ?? 0;
         }
-  
+
         let b = await lastValueFrom(
           this.sensorDataService.fetchElecData(
             `power${i}`,
-            startOfMonth.toISOString().slice(0, 10)
+            new Date(new Date().getTime() - 30 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .slice(0, 10)
           )
         );
         if (b) {
@@ -207,10 +199,10 @@ export class DashboardComponent implements OnInit {
         }
       }
     } catch (error) {
-      console.error('Error while fetching total electricity usage this month: ', error);
+      console.error('Error while fetching total electricity usage: ', error);
     }
-  
-    this.totalElecUsageThisCycle = Math.floor(latest);
+
+    this.totalElecUsageLast30Days = Math.floor(latest);
   }
 
   private async buildChartLabels() {
@@ -343,37 +335,6 @@ export class DashboardComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error while building data for water chart: ', error);
-    }
-  }
-
-  private async getSensorRssi(type: string) {
-    var rssi: number | undefined = undefined;
-    try {
-      if (type === 'water') {
-        rssi = await lastValueFrom(
-          this.sensorDataService.fetchSensorStatus('water')
-        );
-        if (rssi !== undefined) {
-          this.waterRssi = rssi;
-          console.log('Water Rssi: ', rssi);
-        } else {
-          console.error('what');
-        }
-      } else if (type === 'elec') {
-        rssi = await lastValueFrom(
-          this.sensorDataService.fetchSensorStatus('elec')
-        );
-        if (rssi !== undefined) {
-          this.elecRssi = rssi;
-          console.log('Elec Rssi: ', rssi);
-        } else {
-          console.error('what');
-        }
-      } else {
-        console.error('what');
-      }
-    } catch (error) {
-      console.error('what2', error);
     }
   }
 }

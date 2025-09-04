@@ -1,0 +1,6 @@
+[submodule "wesm-frontend"]
+	path = wesm-frontend
+	url = https://github.com/notTPALT/wesm-frontend
+[submodule "wesm-backend"]
+	path = wesm-backend
+	url = https://github.com/notTPALT/wesm-backend
