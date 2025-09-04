@@ -1,4 +1,4 @@
-# water-electecity-sensorss-monitor
+# water-electecity-sensors-monitor
 WESM (Water and Electricity Sensors Monitor)
 
 LET CREATE A YOUR .ENV TO ABLE RUN BACKEND
