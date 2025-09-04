@@ -1,0 +1,27 @@
+<div class="h-64">
+  <div class="flex items-center justify-between mb-2">
+    <h4 class="text-md font-semibold text-gray-700">
+      Electricity Usage Last 30 Days
+    </h4>
+    <div class="flex items-center">
+      <label for="horizontalLineValue" class="text-sm font-medium text-gray-700 mr-2">
+        Horizontal Line Value:
+      </label>
+      <input
+        id="horizontalLineValue"
+        type="number"
+        [(ngModel)]="horizontalLineValue"
+        (ngModelChange)="updateHorizontalLine()"
+        class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+  </div>
+  <div class="relative h-full">
+    <canvas
+      baseChart
+      [data]="electricityData"
+      [options]="electricityOptions"
+      type="bar"
+    ></canvas>
+  </div>
+</div>

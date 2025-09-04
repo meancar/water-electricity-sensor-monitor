@@ -1,0 +1,23 @@
+{
+  "name": "wesm-backend",
+  "type": "commonjs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node --env-file .env ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "http-errors": "~1.6.3",
+    "jade": "^0.29.0",
+    "mongoose": "^8.15.0",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
